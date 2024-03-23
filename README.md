@@ -30,8 +30,6 @@ Through these solutions, Argilla tackles the significant obstacles in the path o
 ## Experimenting with Argilla and SetFit for Movie Genre Classification
 The movie streaming industry, with its reliance on user data to tailor recommendations and enhance viewer experiences, presents a fertile ground for deploying Argilla. By integrating Argilla into the movie streaming ecosystem, engineers can significantly improve the recommendation systems that are central to user engagement and satisfaction.
 
-### Example: Enhancing Recommendations
-
 In this example, we will embark on an exploration journey with Argilla and SetFit, aiming at tackling the challenge of classifying movie genres, a pivotal element in enhancing user experiences on movie streaming platforms.
 
 #### Kickstarting with Argilla
