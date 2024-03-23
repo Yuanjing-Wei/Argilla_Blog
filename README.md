@@ -27,17 +27,80 @@ Many AI projects involve cross-disciplinary teams, including AI engineers and do
 
 Through these solutions, Argilla tackles the significant obstacles in the path of developing, deploying, and maintaining AI and machine learning models, especially those reliant on natural language processing. It aims to make the entire process more accessible, efficient, and effective for organizations of all sizes.
 
-## Argilla and Movie Streaming: A Perfect Match
-
+## Experimenting with Argilla and SetFit for Movie Genre Classification
 The movie streaming industry, with its reliance on user data to tailor recommendations and enhance viewer experiences, presents a fertile ground for deploying Argilla. By integrating Argilla into the movie streaming ecosystem, engineers can significantly improve the recommendation systems that are central to user engagement and satisfaction.
 
 ### Example: Enhancing Recommendations
 
-Imagine a scenario where a movie streaming service wishes to refine its recommendation algorithm. The service has access to vast amounts of user data: viewing histories, ratings, search queries, and even pause and skip patterns. However, the challenge lies in efficiently utilizing this data to train models that can accurately predict user preferences and suggest relevant content.
+In this example, we will embark on an exploration journey with Argilla and SetFit, aiming at tackling the challenge of classifying movie genres, a pivotal element in enhancing user experiences on movie streaming platforms.
 
-This is where Argilla shines. Using its data curation capabilities, engineers can label data more effectively, identifying patterns that indicate user preferences with greater accuracy. For instance, Argilla could help pinpoint which genres or actors are more likely to appeal to specific user segments. This refined data is then used to train models that not only understand broad patterns but can also pick up on the nuances of individual preferences.
+#### Kickstarting with Argilla
 
-Moreover, Argilla's reinforcement learning from human feedback (RLHF) feature allows for continuous improvement of the recommendation model. As users interact with the recommendations, their feedback is fed back into the system, enabling Argilla to further refine the data curation process and improve the model's accuracy over time.
+Argilla emerges as a crucial tool for NLP-related data labeling tasks. To get started:
+
+1. **Setup**:
+   ```bash
+   pip install "argilla[server]"
+   ```
+2. **Initialization**:
+   Launch Elasticsearch, followed by Argilla's server and UI:
+   ```bash
+   python -m argilla
+   ```
+   Navigate to [https://localhost:6900](https://localhost:6900) and log in with the default credentials (`argilla`:`1234`).
+
+#### Setting Up SetFit and Datasets
+
+To facilitate our classification task, install the necessary libraries:
+```bash
+pip install "setfit~=0.2.0" "datasets~=2.3.0" -qqq
+```
+These installations bring in essential modules for dataset preparation and classification execution.
+
+#### Importing Data into Argilla
+
+Our initial action is to import the unsupervised split of the IMDb dataset into Argilla, selecting 100 random samples for our experiment:
+```python
+from datasets import load_dataset
+import argilla as rg
+
+unlabelled = load_dataset("imdb", split="unsupervised").shuffle(seed=42).select(range(100))
+unlabelled = rg.DatasetForTextClassification.from_datasets(unlabelled)
+rg.log(unlabelled, "imdb_unlabelled")
+```
+
+#### The Manual Annotation Phase
+
+Next, we delve into annotating our dataset with sentiments of positive and negative, utilizing Argilla's streamlined interface for about 15 minutes of focused labeling work.
+
+#### Embarking on SetFit Training
+
+With our dataset primed, we move to train our SetFit model:
+```python
+from setfit import SetFitModel, SetFitTrainer
+from sentence_transformers.losses import CosineSimilarityLoss
+
+train_ds = rg.load("imdb_unlabelled").prepare_for_training()
+test_ds = load_dataset("imdb", split="test")
+
+model = SetFitModel.from_pretrained("sentence-transformers/paraphrase-mpnet-base-v2")
+trainer = SetFitTrainer(
+    model=model,
+    train_dataset=train_ds,
+    eval_dataset=test_ds,
+    loss_class=CosineSimilarityLoss,
+    batch_size=16,
+    num_iterations=20
+)
+
+trainer.train()
+metrics = trainer.evaluate()
+```
+
+#### Concluding Insights
+
+This expedition through Argilla and SetFit's capabilities in genre classification not only showcases the potential of combining these tools for efficient and impactful ML tasks but also emphasizes the power of modern ML methodologies in achieving remarkable results with limited data. The process is as enlightening as the outcomes, illustrating the impactful possibilities in the domain of movie streaming and beyond.
+
 
 ## Strengths and Limitations
 
