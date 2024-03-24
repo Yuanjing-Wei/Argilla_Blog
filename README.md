@@ -28,7 +28,7 @@ Many AI projects involve cross-disciplinary teams, including AI engineers and do
 Through these solutions, Argilla tackles the significant obstacles in the path of developing, deploying, and maintaining AI and machine learning models, especially those reliant on natural language processing. It aims to make the entire process more accessible, efficient, and effective for organizations of all sizes.
 
 ## Experimenting with Argilla and SetFit for Movie Genre Classification
-The movie streaming industry, with its reliance on user data to tailor recommendations and enhance viewer experiences, presents a fertile ground for deploying Argilla. By integrating Argilla into the movie streaming ecosystem, engineers can significantly improve the recommendation systems that are central to user engagement and satisfaction.
+The movie streaming industry, with its reliance on user and movie data to tailor recommendations and enhance viewer experiences, presents a fertile ground for deploying Argilla. By integrating Argilla for genre classification into the movie streaming ecosystem, engineers can significantly enhance the accuracy and personalization of movie recommendations. This implementation improves the user experience by ensuring viewers are presented with content more aligned with their preferences, thereby increasing engagement and satisfaction. 
 
 In this example, we will embark on an exploration journey with Argilla and SetFit, aiming at tackling the challenge of classifying movie genres, a pivotal element in enhancing user experiences on movie streaming platforms.
 
